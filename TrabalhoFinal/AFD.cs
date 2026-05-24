@@ -20,7 +20,7 @@ namespace TrabalhoFinal
 
         public HashSet<string> Final;
 
-        public AFD()
+        public AFD Exemplo() //Exemplo pedido
         {
             estados = new HashSet<string>{"q0", "q1", "q2",};
             entrada = new HashSet<char> {'a', 'b'};
@@ -35,6 +35,58 @@ namespace TrabalhoFinal
             };
             inicial = "q0";
             Final = new HashSet<string> {"q2"};
+            return this;
+        }
+
+        public AFD()
+        {
+            estados = new HashSet<string>();
+            entrada = new HashSet<char>();
+            transicoes = new Dictionary<(string estado, char simbolo), string>();
+            inicial = string.Empty;
+            Final = new HashSet<string>();
+        }
+
+
+        //Desafio: receber qualquer AFD
+        public AFD(HashSet<string> estados, HashSet<char> entrada, Dictionary<(string estado, char simbolo), string> transicoes, string inicial, HashSet<string> Final)
+        {
+            this.estados = estados;
+            this.entrada = entrada;
+            this.transicoes = transicoes;
+            this.inicial = inicial;
+            this.Final = Final;
+        }
+
+        public AFD Desafio(string caminhoJson)
+        {
+            if (!File.Exists(caminhoJson))
+            {
+                Console.WriteLine($"Arquivo '{caminhoJson}' não encontrado.");
+                return this; // Retorna o AFD atual sem alterações
+            }
+
+            try
+            {
+                string jsonContent = File.ReadAllText(caminhoJson);
+                AFD afdDesafio = System.Text.Json.JsonSerializer.Deserialize<AFD>(jsonContent);
+
+                if (afdDesafio != null)
+                {
+                    Console.WriteLine("AFD carregado com sucesso do JSON!");
+                    return afdDesafio;
+                }
+                else
+                {
+                    Console.WriteLine("Falha ao desserializar o AFD do JSON. Retornando o AFD atual.");
+                    return this; // Retorna o AFD atual sem alterações
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao ler ou desserializar o arquivo JSON: {ex.Message}");
+                return this; // Retorna o AFD atual sem alterações
+            }
         }
 
         public bool AceitarPalavra(string palavra)
