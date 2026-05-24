@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace TrabalhoFinal
@@ -51,32 +52,87 @@ namespace TrabalhoFinal
 
         public AFD Desafio(string caminhoJson)
         {
-            if (!File.Exists(caminhoJson))
+            string caminhoReal = caminhoJson;
+            if (!File.Exists(caminhoReal))
+            {
+                string alternativa = Path.Combine(AppContext.BaseDirectory, caminhoJson);
+                if (File.Exists(alternativa)) caminhoReal = alternativa;
+            }
+
+            if (!File.Exists(caminhoReal))
             {
                 Console.WriteLine($"Arquivo '{caminhoJson}' não encontrado.");
-                return this; // Retorna o AFD atual sem alterações
+                return this;
             }
 
             try
             {
-                string jsonContent = File.ReadAllText(caminhoJson);
-                AFD afdDesafio = System.Text.Json.JsonSerializer.Deserialize<AFD>(jsonContent);
+                string jsonContent = File.ReadAllText(caminhoReal);
+                using var doc = JsonDocument.Parse(jsonContent);
+                var root = doc.RootElement;
 
-                if (afdDesafio != null)
+                // estados
+                var estados = new HashSet<string>();
+                if (root.TryGetProperty("estados", out var pEstados) && pEstados.ValueKind == JsonValueKind.Array)
                 {
-                    Console.WriteLine("AFD carregado com sucesso do JSON!");
-                    return afdDesafio;
+                    foreach (var e in pEstados.EnumerateArray())
+                        estados.Add(e.GetString() ?? string.Empty);
                 }
-                else
+
+                // alfabeto / entrada
+                var entrada = new HashSet<char>();
+                if (root.TryGetProperty("alfabeto", out var pAlfabeto) && pAlfabeto.ValueKind == JsonValueKind.Array)
                 {
-                    Console.WriteLine("Falha ao desserializar o AFD do JSON. Retornando o AFD atual.");
-                    return this; // Retorna o AFD atual sem alterações
+                    foreach (var a in pAlfabeto.EnumerateArray())
+                    {
+                        var s = a.GetString();
+                        if (!string.IsNullOrEmpty(s)) entrada.Add(s[0]);
+                    }
                 }
+
+                // estado inicial
+                string inicialJson = inicial;
+                if (root.TryGetProperty("estadoInicial", out var pInicial) && pInicial.ValueKind == JsonValueKind.String)
+                    inicialJson = pInicial.GetString() ?? inicialJson;
+
+                // estados finais (tenta várias chaves possíveis)
+                var finais = new HashSet<string>();
+                if (root.TryGetProperty("estadoFinal", out var pFinal) && pFinal.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var f in pFinal.EnumerateArray()) finais.Add(f.GetString() ?? string.Empty);
+                }
+                else if (root.TryGetProperty("estadosAceitacao", out var pAce) && pAce.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var f in pAce.EnumerateArray()) finais.Add(f.GetString() ?? string.Empty);
+                }
+
+                // transições: espera array de objetos { de, letra, para }
+                var transicoes = new Dictionary<(string estado, char simbolo), string>();
+                if (root.TryGetProperty("transicoes", out var pTrans) && pTrans.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var t in pTrans.EnumerateArray())
+                    {
+                        if (!t.TryGetProperty("de", out var pDe) || !t.TryGetProperty("letra", out var pLetra) || !t.TryGetProperty("para", out var pPara))
+                            continue;
+
+                        string de = pDe.GetString() ?? string.Empty;
+                        string letraStr = pLetra.GetString() ?? string.Empty;
+                        if (string.IsNullOrEmpty(letraStr)) continue;
+                        char simbolo = letraStr[0];
+                        string para = pPara.GetString() ?? string.Empty;
+
+                        transicoes[(de, simbolo)] = para;
+                    }
+                }
+
+                var afdCustom = new AFD(estados, entrada, transicoes, inicialJson, finais);
+                Console.WriteLine("AFD personalizado carregado com sucesso (apenas para o desafio).\n");
+                return afdCustom;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao ler ou desserializar o arquivo JSON: {ex.Message}");
-                return this; // Retorna o AFD atual sem alterações
+                Console.WriteLine($"Erro ao ler ou processar o JSON: {ex.Message}");
+                return this;
             }
         }
 
