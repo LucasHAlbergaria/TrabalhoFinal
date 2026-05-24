@@ -1,3 +1,5 @@
+using TrabalhoFinal;
+
 public class Menu
 {
 
@@ -30,6 +32,10 @@ public class Menu
         {
             case 1:
                 Console.WriteLine("Você escolheu a Opção 1.");
+                AFD afd = new AFD();
+                Console.WriteLine("Digite uma palavra");
+                string palavra = Console.ReadLine();
+                afd.AceitarPalavra(palavra);
                 break;
             case 2:
                 Console.WriteLine("Você escolheu a Opção 2.");
