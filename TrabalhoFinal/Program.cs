@@ -2,6 +2,9 @@
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Menu m = new Menu();
+        m.Exibir();
+        m.LerOpcao();
+        m.Executar();
     }
 }
