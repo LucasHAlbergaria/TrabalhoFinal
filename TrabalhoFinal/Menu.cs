@@ -36,7 +36,6 @@ public class Menu
                 Console.WriteLine("1. Teste de palavra desejada AFD");
                 Console.WriteLine("2. Testes de aceitação de palavras (slide)");
                 Console.WriteLine("3. Desafio: Ler Json com AFD");
-                System.Console.WriteLine("4. Exemplo AFD pedido");
                 Console.Write("Escolha uma opção: ");
                 int.TryParse(Console.ReadLine(), out int subOpcao);
 
@@ -57,12 +56,6 @@ public class Menu
                 else if (subOpcao == 3)
                 {
                     afd.Desafio("afd.json");
-                }
-                else if (subOpcao == 4)
-                {
-                    Console.WriteLine("Digite uma palavra para testar o AFD de exemplo:");
-                    string palavra = Console.ReadLine() ?? string.Empty;
-                    afd.AceitarPalavra(palavra);
                 }
                 else
                 {
