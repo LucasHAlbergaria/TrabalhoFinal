@@ -57,13 +57,23 @@ namespace TrabalhoFinal
 
         public void CarregarPalavrasDeArquivo(string caminhoArquivo)
         {
-            if (!File.Exists(caminhoArquivo))
+            string caminhoReal = caminhoArquivo;
+            if (!File.Exists(caminhoReal))
+            {
+                string caminhoBase = Path.Combine(AppContext.BaseDirectory, caminhoArquivo);
+                if (File.Exists(caminhoBase))
+                {
+                    caminhoReal = caminhoBase;
+                }
+            }
+
+            if (!File.Exists(caminhoReal))
             {
                 Console.WriteLine($"Arquivo '{caminhoArquivo}' não encontrado.");
                 return;
             }
 
-            string[] linhas = File.ReadAllLines(caminhoArquivo);
+            string[] linhas = File.ReadAllLines(caminhoReal);
             int numero = 0;
             foreach (var raw in linhas)
             {
