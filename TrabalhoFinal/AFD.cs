@@ -14,7 +14,7 @@ namespace TrabalhoFinal
 
         public HashSet<char> entrada;
 
-        public Dictionary<(string estado, char simbolo), string> delta;
+        public Dictionary<(string estado, char simbolo), string> transicoes;
 
         public string inicial;
 
@@ -24,7 +24,7 @@ namespace TrabalhoFinal
         {
             estados = new HashSet<string>{"q0", "q1", "q2",};
             entrada = new HashSet<char> {'a', 'b'};
-            delta = new Dictionary<(string estado, char simbolo), string> 
+            transicoes = new Dictionary<(string estado, char simbolo), string> 
             {
                 { ("q0", 'a'), "q1" },
                 { ("q0", 'b'), "q0" },
@@ -50,11 +50,12 @@ namespace TrabalhoFinal
                     return false;
                 }
 
-                
-                if (delta.TryGetValue((estadoAtual, simbolo), out string proximoEstado))
+                var passoAtual = (estadoAtual, simbolo);
+
+                if (transicoes.ContainsKey(passoAtual))
                 {
-                    
-                    estadoAtual = proximoEstado;
+
+                    estadoAtual = transicoes[passoAtual];
                 }
                 else
                 {
@@ -76,34 +77,28 @@ namespace TrabalhoFinal
                 return false;
             }
         }
-        
+
 
         public void CarregarPalavrasDeArquivo(string caminhoArquivo)
         {
-            string caminhoReal = caminhoArquivo;
-            if (!File.Exists(caminhoReal))
-            {
-                string caminhoBase = Path.Combine(AppContext.BaseDirectory, caminhoArquivo);
-                if (File.Exists(caminhoBase))
-                {
-                    caminhoReal = caminhoBase;
-                }
-            }
-
-            if (!File.Exists(caminhoReal))
+            if (!File.Exists(caminhoArquivo))
             {
                 Console.WriteLine($"Arquivo '{caminhoArquivo}' não encontrado.");
                 return;
             }
 
-            string[] linhas = File.ReadAllLines(caminhoReal);
+            string[] linhas = File.ReadAllLines(caminhoArquivo);
             int numero = 0;
+
             foreach (var raw in linhas)
             {
                 numero++;
-                string original = raw;
-                string trimmed = raw?.Trim() ?? string.Empty;
 
+                if (raw == null) continue;
+
+                string trimmed = raw.Trim();
+
+             
                 bool isLambda = trimmed.IndexOf("lambda", StringComparison.OrdinalIgnoreCase) >= 0 || trimmed.Contains('λ');
                 string palavra = isLambda || string.IsNullOrEmpty(trimmed) ? string.Empty : trimmed;
 
@@ -113,11 +108,11 @@ namespace TrabalhoFinal
                 }
                 else if (isLambda)
                 {
-                    Console.WriteLine($"Teste {numero}: '{original}' -> tratando como palavra vazia");
+                    Console.WriteLine($"Teste {numero}: '{raw}' -> tratando como palavra vazia");
                 }
                 else
                 {
-                    Console.WriteLine($"Teste {numero}: '{original}'");
+                    Console.WriteLine($"Teste {numero}: '{raw}'");
                 }
 
                 AceitarPalavra(palavra);
