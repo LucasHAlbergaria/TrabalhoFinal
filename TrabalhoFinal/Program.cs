@@ -2,9 +2,12 @@
 {
     private static void Main(string[] args)
     {
-        Menu m = new Menu();
-        m.Exibir();
-        m.LerOpcao();
-        m.Executar();
+          Menu m = new Menu();
+
+        do{
+            m.Exibir();
+            m.LerOpcao();
+            m.Executar();
+        } while (m.opcao != 4);
     }
 }

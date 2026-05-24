@@ -15,7 +15,7 @@ namespace TrabalhoFinal
 
         public Dictionary<(string estado, char simbolo), string> delta;
 
-        public string q0;
+        public string inicial;
 
         public HashSet<string> Final;
 
@@ -30,15 +30,30 @@ namespace TrabalhoFinal
                 { ("q1", 'a'), "q1" },
                 { ("q1", 'b'), "q2" },
                 { ("q1", 'a'), "q1" },
-
-
+                { ("q2", 'a'), "q1" },
+                { ("q2", 'b'), "q0" },
             };
-            q0 = "q0";
-            Final = new HashSet<string> {"q3"};
-
+            inicial = "q0";
+            Final = new HashSet<string> {"q2"};
         }
 
+        public bool AceitarPalavra(string palavra)
+        {
+            string estadoAtual = inicial;
 
+            foreach (char simbolo in palavra)
+            {
+                if (!entrada.Contains(simbolo))
+                {
+                    Console.WriteLine($"Símbolo '{simbolo}' não reconhecido. A palavra é rejeitada.");
+                    return false; // Símbolo não reconhecido
+                }
+            }
+
+            System.Console.WriteLine($"A palavra '{palavra}' é aceita pelo AFD.");
+            return true;
+
+        }
 
 
 
