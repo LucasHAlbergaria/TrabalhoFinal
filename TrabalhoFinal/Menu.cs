@@ -60,7 +60,6 @@ public class Menu
                 }
                 else if (subOpcao == 4)
                 {
-                    afd.Exemplo();
                     Console.WriteLine("Digite uma palavra para testar o AFD de exemplo:");
                     string palavra = Console.ReadLine() ?? string.Empty;
                     afd.AceitarPalavra(palavra);

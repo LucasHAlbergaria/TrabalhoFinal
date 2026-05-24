@@ -20,11 +20,12 @@ namespace TrabalhoFinal
 
         public HashSet<string> Final;
 
-        public AFD Exemplo() //Exemplo pedido
+
+        public AFD()
         {
-            estados = new HashSet<string>{"q0", "q1", "q2",};
-            entrada = new HashSet<char> {'a', 'b'};
-            transicoes = new Dictionary<(string estado, char simbolo), string> 
+            ; estados = new HashSet<string> { "q0", "q1", "q2", };
+            entrada = new HashSet<char> { 'a', 'b' };
+            transicoes = new Dictionary<(string estado, char simbolo), string>
             {
                 { ("q0", 'a'), "q1" },
                 { ("q0", 'b'), "q0" },
@@ -34,17 +35,7 @@ namespace TrabalhoFinal
                 { ("q2", 'b'), "q0" },
             };
             inicial = "q0";
-            Final = new HashSet<string> {"q2"};
-            return this;
-        }
-
-        public AFD()
-        {
-            estados = new HashSet<string>();
-            entrada = new HashSet<char>();
-            transicoes = new Dictionary<(string estado, char simbolo), string>();
-            inicial = string.Empty;
-            Final = new HashSet<string>();
+            Final = new HashSet<string> { "q2" };
         }
 
 
