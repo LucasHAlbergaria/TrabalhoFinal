@@ -43,17 +43,40 @@ namespace TrabalhoFinal
 
             foreach (char simbolo in palavra)
             {
+               
                 if (!entrada.Contains(simbolo))
                 {
-                    Console.WriteLine($"Símbolo '{simbolo}' não reconhecido. A palavra é rejeitada.");
-                    return false; // Símbolo não reconhecido
+                    Console.WriteLine($"Símbolo '{simbolo}' não reconhecido no alfabeto. A palavra é rejeitada.");
+                    return false;
+                }
+
+                
+                if (delta.TryGetValue((estadoAtual, simbolo), out string proximoEstado))
+                {
+                    
+                    estadoAtual = proximoEstado;
+                }
+                else
+                {
+                   
+                    Console.WriteLine($"Transição indefinida para o estado '{estadoAtual}' com o símbolo '{simbolo}'. Palavra rejeitada.");
+                    return false;
                 }
             }
 
-            System.Console.WriteLine($"A palavra '{palavra}' é aceita pelo AFD.");
-            return true;
-
+          
+            if (Final.Contains(estadoAtual))
+            {
+                Console.WriteLine($"A palavra '{palavra}' terminou no estado de aceitação '{estadoAtual}'. ACEITA!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"A palavra '{palavra}' terminou no estado '{estadoAtual}', que NÃO é de aceitação. REJEITADA!");
+                return false;
+            }
         }
+        
 
         public void CarregarPalavrasDeArquivo(string caminhoArquivo)
         {
