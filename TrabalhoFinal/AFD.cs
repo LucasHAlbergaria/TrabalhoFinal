@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,41 @@ namespace TrabalhoFinal
 
         }
 
+        public void CarregarPalavrasDeArquivo(string caminhoArquivo)
+        {
+            if (!File.Exists(caminhoArquivo))
+            {
+                Console.WriteLine($"Arquivo '{caminhoArquivo}' não encontrado.");
+                return;
+            }
 
+            string[] linhas = File.ReadAllLines(caminhoArquivo);
+            int numero = 0;
+            foreach (var raw in linhas)
+            {
+                numero++;
+                string original = raw;
+                string trimmed = raw?.Trim() ?? string.Empty;
+
+                bool isLambda = trimmed.IndexOf("lambda", StringComparison.OrdinalIgnoreCase) >= 0 || trimmed.Contains('λ');
+                string palavra = isLambda || string.IsNullOrEmpty(trimmed) ? string.Empty : trimmed;
+
+                if (string.IsNullOrEmpty(trimmed))
+                {
+                    Console.WriteLine($"Teste {numero}: linha vazia -> usando palavra vazia");
+                }
+                else if (isLambda)
+                {
+                    Console.WriteLine($"Teste {numero}: '{original}' -> tratando como palavra vazia");
+                }
+                else
+                {
+                    Console.WriteLine($"Teste {numero}: '{original}'");
+                }
+
+                AceitarPalavra(palavra);
+            }
+        }
 
     }
 }

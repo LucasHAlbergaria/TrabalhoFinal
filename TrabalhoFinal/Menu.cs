@@ -32,10 +32,30 @@ public class Menu
         {
             case 1:
                 Console.WriteLine("Você escolheu a Opção 1.");
+
+                Console.WriteLine("1. Teste de palavra desejada AFD");
+                Console.WriteLine("2.  Testes de aceitação de palavras (slide)");
+                Console.Write("Escolha uma opção: ");
+                int.TryParse(Console.ReadLine(), out int subOpcao);
+
                 AFD afd = new AFD();
-                Console.WriteLine("Digite uma palavra");
-                string palavra = Console.ReadLine();
-                afd.AceitarPalavra(palavra);
+
+                if (subOpcao == 1)
+                {
+                    Console.WriteLine("Digite uma palavra");
+                    string palavra = Console.ReadLine() ?? string.Empty;
+                    afd.AceitarPalavra(palavra);
+                }
+                else if (subOpcao == 2)
+                {
+                    string caminhoArquivo = "entradasAFD.txt";
+                    Console.WriteLine($"Lendo arquivo de testes: {caminhoArquivo}");
+                    afd.CarregarPalavrasDeArquivo(caminhoArquivo);
+                }
+                else
+                {
+                    Console.WriteLine("Opção inválida. Retornando ao menu principal.");
+                }
                 break;
             case 2:
                 Console.WriteLine("Você escolheu a Opção 2.");
