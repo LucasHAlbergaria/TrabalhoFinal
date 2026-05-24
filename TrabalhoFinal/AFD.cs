@@ -24,7 +24,7 @@ namespace TrabalhoFinal
 
         public AFD()
         {
-            ;estados = new HashSet<string> { "q0", "q1", "q2", };
+            estados = new HashSet<string> { "q0", "q1", "q2", };
             entrada = new HashSet<char> { 'a', 'b' };
             transicoes = new Dictionary<(string estado, char simbolo), string>
             {
@@ -142,7 +142,7 @@ namespace TrabalhoFinal
 
             foreach (char simbolo in palavra)
             {
-               
+
                 if (!entrada.Contains(simbolo))
                 {
                     Console.WriteLine($"Símbolo '{simbolo}' não reconhecido no alfabeto. A palavra é rejeitada.");
@@ -158,13 +158,13 @@ namespace TrabalhoFinal
                 }
                 else
                 {
-                   
+
                     Console.WriteLine($"Transição indefinida para o estado '{estadoAtual}' com o símbolo '{simbolo}'. Palavra rejeitada.");
                     return false;
                 }
             }
 
-          
+
             if (Final.Contains(estadoAtual))
             {
                 Console.WriteLine($"A palavra '{palavra}' terminou no estado de aceitação '{estadoAtual}'. ACEITA!");
@@ -197,7 +197,7 @@ namespace TrabalhoFinal
 
                 string trimmed = raw.Trim();
 
-             
+
                 bool isLambda = trimmed.IndexOf("lambda", StringComparison.OrdinalIgnoreCase) >= 0 || trimmed.Contains('λ');
                 string palavra = isLambda || string.IsNullOrEmpty(trimmed) ? string.Empty : trimmed;
 
@@ -218,5 +218,33 @@ namespace TrabalhoFinal
             }
         }
 
+
+        public void ExibirAFD()
+        {
+           
+            string listaEstados = string.Join(", ", estados);
+            string listaAlfabetos = string.Join(", ", entrada);
+
+            Console.WriteLine($"Estados: [{listaEstados}]");
+            Console.WriteLine($"Estados: [{listaAlfabetos}]");
+            Console.WriteLine("Transições registradas (Função Delta):");
+
+            foreach (var transicao in transicoes)
+            {
+               
+                string estadoOrigem = transicao.Key.estado;
+                char simbolo = transicao.Key.simbolo;
+
+               
+                string estadoDestino = transicao.Value;
+
+                
+                Console.WriteLine($"  δ({estadoOrigem}, '{simbolo}') = {estadoDestino}");
+            }
+
+                Console.WriteLine($"Estado Inicial: {inicial}");
+                string listaFinais = string.Join(", ", Final);
+                Console.WriteLine($"Estados de Aceitação: [{listaFinais}]");
+        }
     }
 }

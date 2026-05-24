@@ -1,20 +1,16 @@
 {
-    "estados": ["q0", "q1", "q2"],
+    "estados": ["q0", "q1"],
     
-    "alfabeto": ["a", "b"],
+    "alfabeto": ["0", "1"],
 
     "estadoInicial": "q0",
 
-    "estadoFinal": ["q2"],
+    "estadoFinal": ["q1"],
 
-    "estadosAceitacao": ["q2"],
+    "estadosAceitacao": ["q1"],
 
     "transicoes": [
-        {"de": "q0", "letra": "a", "para": "q1"},
-        {"de": "q0", "letra": "b", "para": "q0"},
-        {"de": "q1", "letra": "a", "para": "q1"},
-        {"de": "q1", "letra": "b", "para": "q2"},
-        {"de": "q2", "letra": "a", "para": "q1"},
-        {"de": "q2", "letra": "b", "para": "q0"}
+        {"de": "q0", "letra": "1", "para": "q1"}    
+        
     ]
 }
