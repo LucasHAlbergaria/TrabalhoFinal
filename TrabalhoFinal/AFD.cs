@@ -24,7 +24,7 @@ namespace TrabalhoFinal
 
         public AFD()
         {
-            ; estados = new HashSet<string> { "q0", "q1", "q2", };
+            ;estados = new HashSet<string> { "q0", "q1", "q2", };
             entrada = new HashSet<char> { 'a', 'b' };
             transicoes = new Dictionary<(string estado, char simbolo), string>
             {
