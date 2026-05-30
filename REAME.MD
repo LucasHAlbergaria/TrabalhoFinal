@@ -1,8 +1,8 @@
 # Trabalho Prático - Simuladores de Modelos Computacionais
 
 ## Equipe
-* **Nome:** Arthur Candido Teixeira | **Matrícula:** 
-* **Nome:** Lucas Henrique Albergaria | **Matrícula:** 
+* **Nome:** Arthur Candido Teixeira | **Matrícula:** 72400072
+* **Nome:** Lucas Henrique Albergaria | **Matrícula:** 72401400
 * **Nome:** Mateus Soier Ximenes Melo | **Matrícula:** 72401494
 
 ---
