@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace TrabalhoFinal
+namespace Parte1
 {
     internal class AFD
     {
